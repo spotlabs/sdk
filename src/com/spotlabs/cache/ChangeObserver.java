@@ -13,7 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+
+package com.spotlabs.cache;
+
 /**
- * @hide
+ * Created by dclark on 1/24/14.
  */
-package com.spotlabs.nv.idle;
+interface ChangeObserver {
+}

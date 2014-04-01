@@ -16,4 +16,4 @@
 /**
  * @hide
  */
-package com.spotlabs.nv.idle;
+package com.spotlabs.nv;

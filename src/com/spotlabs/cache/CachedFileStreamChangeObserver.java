@@ -13,7 +13,17 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+
+package com.spotlabs.cache;
+
+import java.io.InputStream;
+
 /**
- * @hide
+ * Implement this interface when receiving notifications of file updates and you
+ * need a {@link java.io.InputStream}
+ *
+ * @author dclark
  */
-package com.spotlabs.nv.idle;
+public interface CachedFileStreamChangeObserver extends ChangeObserver{
+    void onChange(String cacheUri, InputStream stream) throws Exception;
+}

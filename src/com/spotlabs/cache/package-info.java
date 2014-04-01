@@ -13,7 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+
 /**
- * @hide
+ * synchronized file caching at it's best
  */
-package com.spotlabs.nv.idle;
+package com.spotlabs.cache;

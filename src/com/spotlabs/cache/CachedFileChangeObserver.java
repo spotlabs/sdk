@@ -13,7 +13,14 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+
+package com.spotlabs.cache;
+
 /**
- * @hide
+ * Implement this interface when you need to receive notification when a file is updated.
+ *
+ * @author dclark
  */
-package com.spotlabs.nv.idle;
+public interface CachedFileChangeObserver extends ChangeObserver {
+    void onChange(String cacheUri);
+}
