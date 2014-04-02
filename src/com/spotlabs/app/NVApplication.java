@@ -50,8 +50,8 @@ import com.spotlabs.update.UpdateService;
 import java.util.HashMap;
 import java.util.Map;
 
-/*
- *  NVApplication extends the default Android {@link Application} to provide for basic plumbing into the nv-platform.
+/**
+ *  NVApplication extends the default Android {@link android.app.Application} to provide for basic plumbing into the nv-platform.
  *  <p/>
  *  To utilize NVApplication update your {@code AndroidManifest.xml} specify a name for your application node.
  *  <pre>
@@ -60,7 +60,7 @@ import java.util.Map;
  *   	...
  *   	android:name="com.spotlabs.app.NVApplication"
  *   	...>}</pre>
- *  This application requires the {@link android.permission.SYSTEM_ALERT_WINDOW} permission  
+ *  This application requires the {@code android.permission.SYSTEM_ALERT_WINDOW} permission
  *   
  *  By using this class you enable: 
  *  <br>
@@ -198,7 +198,7 @@ public class NVApplication extends Application {
         return mServiceManager;
     }
 
-    protected final void onServiceManagerConnected(IServiceManager service) {
+    private void onServiceManagerConnected(IServiceManager service) {
         mServiceManager = new NVServiceManager(service);
         mIdleService = mServiceManager.getService(NVServiceManager.IDLE_SERVICE);
         onServiceManagerConnected();

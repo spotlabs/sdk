@@ -18,9 +18,13 @@ package com.spotlabs.app;
 
 import android.os.IBinder;
 import android.os.RemoteException;
+import com.spotlabs.behavior.BehaviorService;
+import com.spotlabs.cache.CacheService;
 import com.spotlabs.diagnostics.DiagnosticService;
 import com.spotlabs.idle.IdleService;
 import com.spotlabs.nv.IServiceManager;
+import com.spotlabs.nv.behavior.IBehaviorService;
+import com.spotlabs.nv.cache.ICacheService;
 import com.spotlabs.nv.diagnostics.IDiagnosticService;
 import com.spotlabs.nv.idle.IIdleService;
 
@@ -35,6 +39,9 @@ import java.util.Map;
 public class NVServiceManager {
     private IServiceManager mServiceManager;
 
+    /**
+     * @hide
+     */
     public NVServiceManager(IServiceManager serviceManager) {
         mServiceManager = serviceManager;
     }
@@ -47,17 +54,24 @@ public class NVServiceManager {
      * Currently available services are:
      *
      * <dl>
+     *     <dt>{@link #CACHE_SERVICE}("cache")</dt>
+     *     <dd>A {@link com.spotlabs.cache.CacheService} for caching files for offline activity, and monitoring those files for updates.</dd>
      *     <dt>{@link #IDLE_SERVICE}("idle")</dt>
      *     <dd>A {@link com.spotlabs.idle.IdleService} to manage and monitor system idle state. </dd>
+     *     <dt>{@link #BEHAVIOR_SERVICE}("behavior")</dt>
+     *     <dd>A {@link com.spotlabs.behavior.BehaviorService} to interact with the NV platform behavior engine.</dd>
      *     <dt>{@link #DIAGNOSTIC_SERVICE}</dt>
      *     <dd>A {@link com.spotlabs.diagnostics.DiagnosticService} that can be used to show the system diagnostics screen.</dd>
      * </dl>
      * @param serviceName The name of the service.
-     * @param <T> The type of the service.
      * @return The service or null if there is no service with that name.
      *
+     * @see #CACHE_SERVICE
+     * @see com.spotlabs.cache.CacheService
      * @see #IDLE_SERVICE
      * @see com.spotlabs.idle.IdleService
+     * @see #BEHAVIOR_SERVICE
+     * @see com.spotlabs.behavior.BehaviorService
      * @see #DIAGNOSTIC_SERVICE
      * @see com.spotlabs.diagnostics.DiagnosticService
      */
@@ -108,6 +122,24 @@ public class NVServiceManager {
      */
     public static final String DIAGNOSTIC_SERVICE = "diagnostics";
 
+    /**
+     * Use with {@link #getService} to retrieve a
+     * {@link com.spotlabs.cache.CacheService} for caching files for offline activity, and monitoring those files for updates.
+     *
+     * @see #getService
+     * @see com.spotlabs.cache.CacheService
+     */
+    public static final String CACHE_SERVICE = "cache";
+
+    /**
+     * Use with {@link #getService} to retrieve a
+     * {@link com.spotlabs.behavior.BehaviorService}  to interact with the NV platform behavior engine.
+     *
+     * @see #getService
+     * @see com.spotlabs.behavior.BehaviorService
+     */
+    public static final String BEHAVIOR_SERVICE ="behavior";
+
     private static void registerServiceFactory(String serviceName, ServiceFactory serviceFactory){
         SERVICE_MAP.put(serviceName,serviceFactory);
     }
@@ -117,18 +149,35 @@ public class NVServiceManager {
      * @return An {@link com.spotlabs.nv.IServiceManager} interface
      *
      * @see com.spotlabs.nv.IServiceManager
+     *
+     * @hide
      */
     public IServiceManager getIServiceManager(){
         return mServiceManager;
     }
 
     static {
+        registerServiceFactory(CACHE_SERVICE,new ServiceFactory() {
+            @Override
+            public Object createService(IBinder binder) {
+                return new CacheService(ICacheService.Stub.asInterface(binder));
+            }
+        });
+
+        registerServiceFactory(BEHAVIOR_SERVICE,new ServiceFactory() {
+            @Override
+            public Object createService(IBinder binder) {
+                return new BehaviorService(IBehaviorService.Stub.asInterface(binder));
+            }
+        });
+
         registerServiceFactory(IDLE_SERVICE, new ServiceFactory() {
             @Override
             public Object createService(IBinder binder) {
                 return new IdleService( IIdleService.Stub.asInterface(binder));
             }
         });
+
         registerServiceFactory(DIAGNOSTIC_SERVICE, new ServiceFactory() {
             @Override
             public Object createService(IBinder binder) {

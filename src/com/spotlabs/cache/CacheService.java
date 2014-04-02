@@ -42,6 +42,9 @@ public class CacheService {
 
     private final ICacheService mService;
 
+    /**
+     * @hide
+     */
     public CacheService(ICacheService service){
         mService = service;
     }

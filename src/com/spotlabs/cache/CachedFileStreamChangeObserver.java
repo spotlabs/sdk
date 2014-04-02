@@ -19,11 +19,17 @@ package com.spotlabs.cache;
 import java.io.InputStream;
 
 /**
- * Implement this interface when receiving notifications of file updates and you
- * need a {@link java.io.InputStream}
+ * Implement this interface when receiving notifications of file updates and you need a {ls -@link java.io.InputStream}
  *
  * @author dclark
  */
 public interface CachedFileStreamChangeObserver extends ChangeObserver{
+    /**
+     * Called when the remote file changes.
+     *
+     * @param cacheUri The URL of the remote file
+     * @param stream A {@link java.io.InputStream} to read the file contents from
+     * @throws Exception
+     */
     void onChange(String cacheUri, InputStream stream) throws Exception;
 }
