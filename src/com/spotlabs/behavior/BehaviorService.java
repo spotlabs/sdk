@@ -24,9 +24,7 @@ import com.spotlabs.nv.behavior.IBehaviorService;
  * Keeps track of application state changes and executes programmed actions when events occur.
  *
  * @author dclark
- *
- * @hide
- */
+  */
 public class BehaviorService {
 
     private static final String TAG = "NV:BehaviorService";

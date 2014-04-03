@@ -13,8 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
 /**
- * Interact with the NV behavior engine.
+ * Interact with the update system
  */
-package com.spotlabs.behavior;
+package com.spotlabs.update;
