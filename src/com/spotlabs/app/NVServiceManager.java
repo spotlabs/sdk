@@ -58,6 +58,8 @@ public class NVServiceManager {
      *     <dd>A {@link com.spotlabs.cache.CacheService} for caching files for offline activity, and monitoring those files for updates.</dd>
      *     <dt>{@link #IDLE_SERVICE}("idle")</dt>
      *     <dd>A {@link com.spotlabs.idle.IdleService} to manage and monitor system idle state. </dd>
+     *     <dt>{@link #MESSAGE_SERVICE}("behavior")</dt>
+     *     <dd>A {@link com.spotlabs.messaging.MessageService} to send HTTP messages.</dd>
      *     <dt>{@link #BEHAVIOR_SERVICE}("behavior")</dt>
      *     <dd>A {@link com.spotlabs.behavior.BehaviorService} to interact with the NV platform behavior engine.</dd>
      *     <dt>{@link #DIAGNOSTIC_SERVICE}</dt>
@@ -70,6 +72,8 @@ public class NVServiceManager {
      * @see com.spotlabs.cache.CacheService
      * @see #IDLE_SERVICE
      * @see com.spotlabs.idle.IdleService
+     * @see #MESSAGE_SERVICE
+     * @see com.spotlabs.messaging.MessageService
      * @see #BEHAVIOR_SERVICE
      * @see com.spotlabs.behavior.BehaviorService
      * @see #DIAGNOSTIC_SERVICE
@@ -121,6 +125,15 @@ public class NVServiceManager {
      * @see com.spotlabs.diagnostics.DiagnosticService
      */
     public static final String DIAGNOSTIC_SERVICE = "diagnostics";
+
+    /**
+     * Use with {@link #getService} to retrieve a
+     * {@link com.spotlabs.messaging.MessageService} that can be used to send HTTP messages.
+     *
+     * @see #getService
+     * @see com.spotlabs.diagnostics.DiagnosticService
+     */
+    public static final String MESSAGE_SERVICE = "message";
 
     /**
      * Use with {@link #getService} to retrieve a
