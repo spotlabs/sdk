@@ -24,14 +24,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.res.AssetManager;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -47,6 +50,9 @@ import com.spotlabs.idle.IdleService;
 import com.spotlabs.nv.IServiceManager;
 import com.spotlabs.update.UpdateService;
 
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -217,42 +223,69 @@ public class NVApplication extends Application {
     }
 
     /**
+     * Register a typeface with the system.
+     *
+     * @param family The name of the the typeface family
+     * @param assetManager An {@link android.content.res.AssetManager} to use for loading.
+     * @param path The path to the font asset.
+     */
+    protected void registerTypeface(String family, AssetManager assetManager, String path){
+        try {
+            Method method = Typeface.class.getMethod("registerTypeface", String.class, AssetManager.class,String.class);
+            method.invoke(null,family,assetManager,path);
+        } catch (NoSuchMethodException e) {
+            Log.w(TAG, "Error reading typeface asset", e);
+        } catch (InvocationTargetException e) {
+            Log.w(TAG,"Error registering typeface",e);
+        } catch (IllegalAccessException e) {
+            Log.w(TAG,"Error registering typeface",e);
+        }
+    }
+
+    /**
+     * Register a typeface with the system
+     *
+     * @param family The name of the the typeface family
+     * @param file A {@link java.io.File} referencing the font file.
+     */
+    protected void registerTypeface(String family, File file){
+        try {
+            Method method = Typeface.class.getMethod("registerTypeface", String.class, File.class);
+            method.invoke(null,"MinionPro",family,file);
+        } catch (NoSuchMethodException e) {
+            Log.i(TAG, "registerTypeface is not available on non Spot Labs devices.");
+        } catch (InvocationTargetException e) {
+            Log.w(TAG,"Error registering typeface",e);
+        } catch (IllegalAccessException e) {
+            Log.w(TAG,"Error registering typeface",e);
+        }
+    }
+
+    /**
+     * Register a typeface with the system
+     *
+     * @param family The name of the the typeface family
+     * @param file The path to the font file.
+     */
+    protected void registerTypeface(String family, String file){
+        try {
+            Method method = Typeface.class.getMethod("registerTypeface", String.class, String.class);
+            method.invoke(null,"MinionPro",family,file);
+        } catch (NoSuchMethodException e) {
+            Log.i(TAG,"registerTypeface is not available on non Spot Labs devices.");
+        } catch (InvocationTargetException e) {
+            Log.w(TAG,"Error registering typeface",e);
+        } catch (IllegalAccessException e) {
+            Log.w(TAG,"Error registering typeface",e);
+        }
+    }
+
+    /**
      * @hide
      */
     private void showDiagnosticsScreen() {
-        final Dialog dialog = new Dialog(mCurrentActivity);
-        dialog.setTitle("Please enter your diagnostics pin");
-
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-
-        final EditText field = new EditText(mCurrentActivity);
-        field.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-        field.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
-        field.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        layout.addView(field);
-
-        Button submit = new Button(mCurrentActivity);
-        submit.setText("Submit");
-        submit.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-        layout.addView(submit);
-
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String enteredPin = field.getText().toString();
-                DiagnosticService diagnosticService = mServiceManager.getService(NVServiceManager.DIAGNOSTIC_SERVICE);
-                if (diagnosticService.showDiagnosticScreen(enteredPin)){
-                    dialog.dismiss();
-                }else
-                {
-                    field.setError("Invalid PIN.");
-                }
-            }
-        });
-
-        dialog.setContentView(layout);
-        dialog.show();
+        DiagnosticService diagnosticService = mServiceManager.getService(NVServiceManager.DIAGNOSTIC_SERVICE);
+        diagnosticService.showDiagnosticScreen(null);
     }
 
     protected Activity getCurrentActivity(){
