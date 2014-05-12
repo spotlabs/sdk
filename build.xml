@@ -9,7 +9,7 @@
     <target name="compile">
         <mkdir dir="bin/classes"/>
         <javac srcdir="src" destdir="bin/classes">
-            <classpath path="${env.ANDROID_HOME}/platforms/android-18/android.jar"/>
+            <classpath path="${ANDROID_SDK}"/>
         </javac>
     </target>
 
