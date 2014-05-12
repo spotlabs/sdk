@@ -229,7 +229,7 @@ public class NVApplication extends Application {
      * @param assetManager An {@link android.content.res.AssetManager} to use for loading.
      * @param path The path to the font asset.
      */
-    protected void registerTypeface(String family, AssetManager assetManager, String path){
+    public void registerTypeface(String family, AssetManager assetManager, String path){
         try {
             Method method = Typeface.class.getMethod("registerTypeface", String.class, AssetManager.class,String.class);
             method.invoke(null,family,assetManager,path);
@@ -248,7 +248,7 @@ public class NVApplication extends Application {
      * @param family The name of the the typeface family
      * @param file A {@link java.io.File} referencing the font file.
      */
-    protected void registerTypeface(String family, File file){
+    public void registerTypeface(String family, File file){
         try {
             Method method = Typeface.class.getMethod("registerTypeface", String.class, File.class);
             method.invoke(null,"MinionPro",family,file);
@@ -267,7 +267,7 @@ public class NVApplication extends Application {
      * @param family The name of the the typeface family
      * @param file The path to the font file.
      */
-    protected void registerTypeface(String family, String file){
+    public void registerTypeface(String family, String file){
         try {
             Method method = Typeface.class.getMethod("registerTypeface", String.class, String.class);
             method.invoke(null,"MinionPro",family,file);
