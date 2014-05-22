@@ -1,0 +1,10 @@
+<project>
+    <target name="-pre-build"></target>
+    <target name="-pre-compile"></target>
+    <target name="-post-compile">
+        <jar destfile="nv-sdk.jar" basedir="bin/classes"/>
+    </target>
+    <target name="-post-package"></target>
+    <target name="-post-build"></target>
+    <target name="-pre-clean"></target>
+</project>
