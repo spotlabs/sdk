@@ -62,7 +62,7 @@ public class ContentFactory extends ContextWrapper{
 
             @Override
             public boolean hasNext() {
-                return !mCursor.isLast();
+                return  mCursor != null && !mCursor.isLast();
             }
 
             @Override
@@ -82,8 +82,6 @@ public class ContentFactory extends ContextWrapper{
             public void remove() {
 
             }
-
-
         }
     }
 
