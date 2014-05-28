@@ -27,7 +27,11 @@ public class Content {
     public static String AUTHORITY = "com.spotlabs.provider.Content";
     public static Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY+"/");
 
-    public static Uri getPropertyUri(String pkg,String property){
+    public static Uri getPropertyUri(String pkg, String property){
         return CONTENT_URI.buildUpon().appendPath(pkg).appendPath(property).build();
+    }
+
+    public static Uri getContentUri(int contentId){
+        return Uri.withAppendedPath(CONTENT_URI,Integer.toString(contentId));
     }
 }

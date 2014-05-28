@@ -18,6 +18,7 @@
 
 package com.spotlabs.content;
 
+import android.net.Uri;
 import com.spotlabs.content.Media;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,7 +34,8 @@ public class Image extends Media {
         }
     };
 
-    public Image(JSONObject jsonObject) {
+    public Image(JSONObject jsonObject) throws JSONException {
         super(jsonObject);
     }
+
 }

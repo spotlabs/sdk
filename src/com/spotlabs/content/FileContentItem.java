@@ -18,21 +18,21 @@
 
 package com.spotlabs.content;
 
+import android.net.Uri;
+import com.spotlabs.provider.Content;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by dclark on 4/24/14.
+ * Created by dclark on 5/27/14.
  */
-public class Media extends FileContentItem {
-    static final TypeFactory<Media> factory = new TypeFactory<Media>() {
-        @Override
-        public Media createObject(JSONObject json) throws JSONException {
-            return new Media(json);
-        }
-    };
+public class FileContentItem extends ContentItem{
+    public final Uri source;
+    public final Uri content;
 
-    public Media(JSONObject json) throws JSONException {
-        super(json);
+    public FileContentItem(JSONObject jsonData) throws JSONException {
+        super(jsonData);
+        source = Uri.parse(jsonData.getString("nv:FileName"));
+        content = Content.getContentUri(id);
     }
 }

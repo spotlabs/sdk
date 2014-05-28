@@ -22,17 +22,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by dclark on 4/24/14.
+ * Created by dclark on 5/27/14.
  */
-public class Media extends FileContentItem {
-    static final TypeFactory<Media> factory = new TypeFactory<Media>() {
-        @Override
-        public Media createObject(JSONObject json) throws JSONException {
-            return new Media(json);
-        }
-    };
+public class ContentItem {
 
-    public Media(JSONObject json) throws JSONException {
-        super(json);
+    public final int id;
+    private final String sourceJson;
+
+    public ContentItem(JSONObject jsonData) throws JSONException {
+        id = jsonData.getInt("nv:Id");
+        sourceJson = jsonData.toString();
+    }
+
+    @Override
+    public String toString() {
+        return sourceJson;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof ContentItem && ((ContentItem) o).id == id;
     }
 }
