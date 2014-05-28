@@ -18,6 +18,7 @@
 
 package com.spotlabs.content;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.database.Cursor;
@@ -144,5 +145,6 @@ public class ContentFactory extends ContextWrapper{
     static {
         registerTypeFactory(10,Media.class,Media.factory);
         registerTypeFactory(11,Image.class,Image.factory);
+        registerTypeFactory(12,Video.class,Video.factory);
     }
 }
