@@ -25,6 +25,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 import android.util.SparseArray;
+import com.spotlabs.provider.Content;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -125,6 +126,23 @@ public class ContentFactory extends ContextWrapper{
         internalRegisterTypeFactory(typeId,cls,factory);
         registerSubclassFactory(typeId, cls.getSuperclass(), factory);
     }
+
+    protected <T> T loadObject(Class<T> cls, int id){
+        try {
+            Cursor cursor = getContentResolver().query(Content.getContentUri(id), null, null, null, null);
+            if (cursor.moveToNext()) {
+                JSONObject item = new JSONObject(cursor.getString(0));
+                return createObject(cls, item);
+            }
+            else{
+                Log.w(TAG,"No content found for id "+id);
+                return null;
+            }
+        }catch(Exception e){
+            Log.w(TAG,"Error loading content id "+id,e);
+            return null;
+        }
+    };
 
     public static <T> T createObject(Class<T> cls, JSONObject json) throws JSONException {
         if (json == null) return null;
