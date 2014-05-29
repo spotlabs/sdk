@@ -26,6 +26,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.util.SparseArray;
 import com.spotlabs.provider.Content;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,24 +57,38 @@ public class ContentFactory extends ContextWrapper{
         }
 
         private class ContentIterator implements Iterator<T> {
-            private Cursor mCursor;
+            private JSONArray items;
+            private int index = 0;
 
-            public ContentIterator(Cursor cursor) {
-                mCursor = cursor;
+            public ContentIterator(Cursor cursor)
+            {
+                if (cursor == null || !cursor.moveToFirst()){
+                    items = new JSONArray();
+                }else {
+                    try {
+                        if (cursor.getColumnName(0).equals("json")) {
+                            items = new JSONArray();
+                            items.put(new JSONObject(cursor.getString(0)));
+                        } else {
+                            if (cursor.getColumnName(0).equals("array")) {
+                                items = new JSONArray(cursor.getString(0));
+                            }
+                        }
+                    } catch (JSONException e) {
+                        Log.w(TAG, "Error parsing query response " + cursor.getString(0) + " for " + mClass, e);
+                    }
+                }
             }
 
             @Override
             public boolean hasNext() {
-                return  mCursor != null && !mCursor.isLast();
+                return index < items.length();
             }
 
             @Override
             public T next() {
                 try {
-                    if (mCursor.moveToNext()) {
-                        JSONObject item = new JSONObject(mCursor.getString(0));
-                        return createObject(mClass,item);
-                    }
+                    return createObject(mClass,items.getJSONObject(index++));
                 }catch(JSONException e){
                     Log.w("Error parsing JSON for "+mClass,e);
                 }
