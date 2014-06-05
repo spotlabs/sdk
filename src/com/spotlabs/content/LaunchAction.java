@@ -18,26 +18,27 @@
 
 package com.spotlabs.content;
 
-import android.content.ComponentName;
+import android.os.Parcel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by dclark on 5/26/14.
+ * Created by dclark on 5/29/14.
  */
-public class Activity extends ContentItem {
+public class LaunchAction extends Action {
 
-    static final TypeFactory<Activity> factory = new TypeFactory<Activity>() {
+    static final TypeFactory<LaunchAction> factory = new TypeFactory<LaunchAction>() {
         @Override
-        public Activity createObject(JSONObject json) throws JSONException {
-            return new Activity(json);
+        public LaunchAction createObject(JSONObject json) throws JSONException {
+            return new LaunchAction(json);
         }
     };
 
-    public final ComponentName name;
+    public final Activity activity;
 
-    public Activity(JSONObject jsonData) throws JSONException {
+    public LaunchAction(JSONObject jsonData) throws JSONException {
         super(jsonData);
-        name = new ComponentName(jsonData.getString("package"),jsonData.getString("nv:Name"));
+        activity = ContentFactory.createObject(Activity.class,jsonData.getJSONObject("activity"));
     }
+
 }

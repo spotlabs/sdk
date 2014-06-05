@@ -61,22 +61,27 @@ public class ContentFactory extends ContextWrapper{
             private int index = 0;
 
             public ContentIterator(Cursor cursor)
-            {
-                if (cursor == null || !cursor.moveToFirst()){
-                    items = new JSONArray();
-                }else {
+            {   if (cursor != null) {
                     try {
-                        if (cursor.getColumnName(0).equals("json")) {
-                            items = new JSONArray();
-                            items.put(new JSONObject(cursor.getString(0)));
-                        } else {
-                            if (cursor.getColumnName(0).equals("array")) {
-                                items = new JSONArray(cursor.getString(0));
+                        if (cursor.moveToFirst()) {
+                            try {
+                                if (cursor.getColumnName(0).equals("json")) {
+                                    items = new JSONArray();
+                                    items.put(new JSONObject(cursor.getString(0)));
+                                } else {
+                                    if (cursor.getColumnName(0).equals("array")) {
+                                        items = new JSONArray(cursor.getString(0));
+                                    }
+                                }
+                                return;
+                            } catch (JSONException e) {
+                                Log.w(TAG, "Error parsing query response " + cursor.getString(0) + " for " + mClass, e);
                             }
                         }
-                    } catch (JSONException e) {
-                        Log.w(TAG, "Error parsing query response " + cursor.getString(0) + " for " + mClass, e);
+                    } finally {
+                        cursor.close();
                     }
+                    items = new JSONArray();
                 }
             }
 
@@ -179,5 +184,7 @@ public class ContentFactory extends ContextWrapper{
         registerTypeFactory(10,Media.class,Media.factory);
         registerTypeFactory(11,Image.class,Image.factory);
         registerTypeFactory(12,Video.class,Video.factory);
+        registerTypeFactory(17,Activity.class,Activity.factory);
+        registerTypeFactory(24,LaunchAction.class,LaunchAction.factory);
     }
 }

@@ -2,5 +2,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.spotlabs"
       android:versionCode="1"
-      android:versionName="1.0">
+      android:versionName="1.2.0.162">
 </manifest>
