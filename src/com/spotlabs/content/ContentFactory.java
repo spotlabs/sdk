@@ -61,7 +61,8 @@ public class ContentFactory extends ContextWrapper{
             private int index = 0;
 
             public ContentIterator(Cursor cursor)
-            {   if (cursor != null) {
+            {
+                if (cursor != null) {
                     try {
                         if (cursor.moveToFirst()) {
                             try {
@@ -81,8 +82,8 @@ public class ContentFactory extends ContextWrapper{
                     } finally {
                         cursor.close();
                     }
-                    items = new JSONArray();
                 }
+                items = new JSONArray();
             }
 
             @Override
