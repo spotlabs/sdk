@@ -18,27 +18,41 @@
 
 package com.spotlabs.content;
 
-import android.os.Parcel;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Created by dclark on 5/29/14.
+ * Created by dclark on 6/12/14.
  */
 public class LaunchAction extends Action {
+    public final Activity activity;
+    public final Iterable<Extra> extras;
 
-    static final TypeFactory<LaunchAction> factory = new TypeFactory<LaunchAction>() {
+    public LaunchAction(JSONObject jsonData) throws JSONException {
+        super(jsonData);
+        activity = ContentFactory.createObject(Activity.class,jsonData.getJSONObject("activity"));
+
+        JSONArray extraArray = jsonData.optJSONArray("extras");
+        if (extraArray != null){
+            List<Extra> extraList = new ArrayList<Extra>();
+            for (int i =0;i<extraArray.length();i++){
+                extraList.add(ContentFactory.createObject(Extra.class,extraArray.getJSONObject(i)));
+            }
+            this.extras = extraList;
+        }else{
+            this.extras = new ArrayList<Extra>();
+        }
+    }
+
+    public static TypeFactory<LaunchAction> factory = new TypeFactory<LaunchAction>() {
         @Override
         public LaunchAction createObject(JSONObject json) throws JSONException {
             return new LaunchAction(json);
         }
     };
-
-    public final Activity activity;
-
-    public LaunchAction(JSONObject jsonData) throws JSONException {
-        super(jsonData);
-        activity = ContentFactory.createObject(Activity.class,jsonData.getJSONObject("activity"));
-    }
 
 }

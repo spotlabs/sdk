@@ -19,6 +19,8 @@
 package com.spotlabs.content;
 
 import android.content.ComponentName;
+import com.spotlabs.content.ContentItem;
+import com.spotlabs.content.TypeFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 

@@ -16,22 +16,33 @@
  *  *****************************************************************************
  */
 
-package com.spotlabs.app;
+package com.spotlabs.content;
 
-import android.content.ContentResolver;
-import android.os.Handler;
-import com.spotlabs.settings.NVSettings;
+import android.content.Intent;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
- * Created by dclark on 4/29/14.
+ * Created by dclark on 6/12/14.
  */
-public class NVApplication extends NVApplicationBase<NVSettings> {
-    @Override
-    protected NVSettings createSettings(ContentResolver resolver, Handler handler) {
-        return new NVSettings(resolver,handler);
+public class StringExtra extends Extra{
+
+    public final String value;
+
+    public StringExtra(JSONObject jsonData) throws JSONException {
+        super(jsonData);
+        value = jsonData.getString("value");
     }
 
-    public static NVApplication getInstance(){
-        return (NVApplication) NVApplicationBase.getInstance();
+    @Override
+    public void put(Intent intent) {
+        intent.putExtra(name,value);
     }
+
+    public static final TypeFactory<StringExtra> factory = new TypeFactory<StringExtra>() {
+        @Override
+        public StringExtra createObject(JSONObject json) throws JSONException {
+            return new StringExtra(json);
+        }
+    };
 }

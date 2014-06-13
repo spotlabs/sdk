@@ -187,5 +187,8 @@ public class ContentFactory extends ContextWrapper{
         registerTypeFactory(12,Video.class,Video.factory);
         registerTypeFactory(17,Activity.class,Activity.factory);
         registerTypeFactory(24,LaunchAction.class,LaunchAction.factory);
+        registerTypeFactory(27,StringExtra.class,StringExtra.factory);
+        registerTypeFactory(28,IntExtra.class,IntExtra.factory);
+        registerTypeFactory(29,BoolExtra.class,BoolExtra.factory);
     }
 }

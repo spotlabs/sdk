@@ -18,16 +18,13 @@
 
 package com.spotlabs.content;
 
-import android.content.ComponentName;
-import android.os.Parcelable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by dclark on 5/29/14.
+ * Created by dclark on 6/12/14.
  */
 public class Action extends ContentItem {
-
     public Action(JSONObject jsonData) throws JSONException {
         super(jsonData);
     }
