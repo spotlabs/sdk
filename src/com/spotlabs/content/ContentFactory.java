@@ -148,19 +148,34 @@ public class ContentFactory extends ContextWrapper{
         registerSubclassFactory(typeId, cls.getSuperclass(), factory);
     }
 
-    protected <T> T loadObject(Class<T> cls, int id){
+    protected int getInteger(Uri contentUri){
         try {
-            Cursor cursor = getContentResolver().query(Content.getContentUri(id), null, null, null, null);
+            Cursor cursor = getContentResolver().query(contentUri, null, null, null, null);
+            if (cursor.moveToNext()) {
+                return Integer.parseInt(cursor.getString(0));
+            }
+            else{
+                Log.w(TAG,"No content found for Uri "+contentUri);
+            }
+        }catch(Exception e){
+            Log.w(TAG,"Error loading content for Uri  "+contentUri,e);
+        }
+        return -1;
+    }
+
+    protected <T> T loadObject(Class<T> cls, Uri contentUri){
+        try {
+            Cursor cursor = getContentResolver().query(contentUri, null, null, null, null);
             if (cursor.moveToNext()) {
                 JSONObject item = new JSONObject(cursor.getString(0));
                 return createObject(cls, item);
             }
             else{
-                Log.w(TAG,"No content found for id "+id);
+                Log.w(TAG,"No content found for Uri "+contentUri);
                 return null;
             }
         }catch(Exception e){
-            Log.w(TAG,"Error loading content id "+id,e);
+            Log.w(TAG,"Error loading content for Uri  "+contentUri,e);
             return null;
         }
     };
